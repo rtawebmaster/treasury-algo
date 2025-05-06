@@ -3,4 +3,5 @@ venv/
 .notes/
 .tmp/
 .env
+.env_*
 *.pkl
