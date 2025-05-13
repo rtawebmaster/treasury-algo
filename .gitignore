@@ -4,6 +4,11 @@ venv/
 .tmp/
 .env
 .env_*
+.env.local
+.env.prod
+.env.stage
+.env.dev
+.env.test
 *.pkl
 *.sql
 *.bak

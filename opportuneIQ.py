@@ -19,7 +19,6 @@ def ProcessTreasuryForecastingData():
     logging.info("Starting data loading and initial processing")
     running_balances = load_and_process_data() # Pass parameters if needed: req_body)
     logging.info(f"Data processing complete. Shape: {running_balances.shape}")
-    running_balances.head(5)  # Display the first 5 rows for debugging
 
     # # Part 2: Algorithm processing
     logging.info("Starting algorithm processing")
