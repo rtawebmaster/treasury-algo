@@ -5,8 +5,10 @@ from datetime import datetime
 
 # Import modularized code
 from data_processor import load_and_process_data
+from data_processor import load_asset_classes
 from algorithm_processor import process_investment_algorithm
 from database_writer import write_results_to_database
+from database_writer import truncate_investment_window_table
 
 def ProcessTreasuryForecastingData():
     logging.info('Python HTTP trigger function processed a request.')
@@ -18,7 +20,8 @@ def ProcessTreasuryForecastingData():
     # # Part 1: Data loading and processing
     logging.info("Starting data loading and initial processing")
     running_balances = load_and_process_data() # Pass parameters if needed: req_body)
-    logging.info(f"Data processing complete. Shape: {running_balances.shape}")
+    asset_classes = load_asset_classes()  # Load asset classes
+    logging.info(f"Data loading and processing complete. Running Balances shape: {running_balances.shape}, Asset Classes shape: {asset_classes.shape}")
 
     # # Part 2: Algorithm processing
     logging.info("Starting algorithm processing")
@@ -27,7 +30,8 @@ def ProcessTreasuryForecastingData():
 
     # # Part 3: Database writing
     logging.info("Starting database write operation")
-    write_results_to_database(investment_windows)
+    truncate_investment_window_table()
+    write_results_to_database(investment_windows, asset_classes)
     logging.info("Database write operation complete")
     return 'Success'
 

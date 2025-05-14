@@ -5,22 +5,13 @@ import pandas as pd
 import numpy as np
 from shared.config import get_db_connection
 
-def load_and_process_data(): # parameters
-
-    logging.info('Executing data_processor/load_and_process_data().')
-    running_balances = pd.DataFrame()
-
+def load_asset_classes():
+    logging.info('Executing data_processor/load_asset_classes().')
     """
-    Load and process data to generate running balances
-
-    Parameters:
-        parameters (dict): Parameters from the request
-
+    Load asset classes from the database
     Returns:
-        pandas.DataFrame: DataFrame containing running balances
+        pandas.DataFrame: DataFrame containing asset classes
     """
-    # CODE FROM THE WINDOWS NOTEBOOK
-
     # STEP 1: Get the asset classes combined with their parent class ID
     table_name = 'AssetClass'
     sql = """SELECT a.`ID`, a.`Title`, a.`Group`, a.`Issuer`, a.`PercentMax`,
@@ -32,7 +23,16 @@ def load_and_process_data(): # parameters
     """
     asset_classes = fetch_data(table_name, '',1,sql)
     asset_classes = asset_classes.rename(columns={'ID': 'AssetClassID', 'Title': 'AssetClassTitle', 'Group': 'AssetClassGroup', 'Issuer': 'AssetClassIssuer', 'PercentMax': 'AssetClassPercentMax'})
+    return asset_classes
 
+def load_and_process_data():
+    logging.info('Executing data_processor/load_and_process_data().')
+    running_balances = pd.DataFrame()
+    """
+    Load and process data to generate running balances
+    Returns:
+        pandas.DataFrame: DataFrame containing running balances
+    """
     # STEP 2(4): Running balance day view taken from the SQL views
     #           Q: Do we want to replace the SQL views with pandas dataframes?
     table_name = 'RunningBalanceDayView'
@@ -52,6 +52,7 @@ def load_and_process_data(): # parameters
         on='TransactionDate',
         how='left'
     )
+    asset_classes = load_asset_classes()
     # Add the asset class PercentMax column to the running balances DataFrame matching the on TransactionClass column
     # Create a mapping dictionary from Title to PercentMax
     percentmax_mapping = dict(zip(asset_classes['AssetClassTitle'], asset_classes['AssetClassPercentMax']))
