@@ -3,9 +3,10 @@ This is the V2 of the windows algo that has been vastly simplied. V1 is looking 
 ## Order of things
 1. algo.ipynb - first spike
 2. windows.ipynb - rebuild of the daily asset balances -the df is saved into a .pkl file(s): running_balances.pkl
-3. algo2.ipynb   - algo process finding low points from the end with visual (to be replaced with forward look)
-       NOTE: For the deploy/release this code has been put into *_processor files that have then been added to the Azure function project
-4. algo3.ipynb   - Forward look algo identifying low points (looking forward into the cave)
+3. algo2.ipynb   - process finding low points from the end with visual (to be replaced with forward look)
+           NOTE: For the deploy/release this code has been put into *_processor files that have then been added to the Azure function project
+                     Test process that writes the result into the prod database is in opportuneIQ.py
+4. algo3.ipynb   - New forward look algo identifying low points (looking forward into the cave)
 
 
 ## Path
