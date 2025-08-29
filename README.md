@@ -5,7 +5,7 @@ This version is missing the first days. Refer to:
 onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteAssets/Treasury%20Forecast%20App%20Dev%20-%20FIT%20Notebook/Reporting.one#Algo%20v1&section-id={4FB27D2B-D94B-403E-88C4-489FB087F2B4}&page-id={626A579A-929B-46DD-BB2D-6A1523B24BF5}&end
 
 
-## Notebooks execution order (temp data storing in pkl files)
+## Notebook's execution order (temp data is stored in pkl files)
 1. algo.ipynb
        first spike - don't use (kept just for reference)
 
@@ -16,7 +16,7 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
 3. algo2.ipynb
        algo2 <- running_balances.pkl -> invest_windows.pkl
               process finding low points from the end with visual (needs the forward look by day)
-                     NOTE: This is the dev reposityry with the algo code put into *_processor files that have then been later added to the Azure function project that is used for deployment.
+                     NOTE: This is the dev repository with the algo code put into *_processor files that have then been added to the Azure function project that is used for deployment.
 
 4. Write the results back into the database
        insert (local) <- invest_windows.pkl
@@ -46,4 +46,5 @@ echo "" > .\.venv\.nosync
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -r ./requirements.txt
 .\.venv\Scripts\python.exe -m pip install ipykernel
+.\.venv\Scripts\activate
 ```
