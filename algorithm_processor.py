@@ -20,6 +20,8 @@ def process_investment_algorithm(running_balances):
             columns={'TransactionDate': 'Date', 'Available': 'Balance'}
         )
         result = identify_low_points(df)
+        progressive_result = identify_progressive_timespans(df)
+        result = pd.concat([result, progressive_result], ignore_index=True).fillna(0)
         result['Asset Class'] = asset_class
         windows = pd.concat([windows,result], ignore_index=True)
         result.sort_values('StartDate', ascending=True)
@@ -101,7 +103,8 @@ def identify_low_points(df, asset_class ='Asset Class', min_days=2):
                 'LowPointBalance': low_balance,
                 'StartDate': start_date,
                 'EndDate': end_date,
-                'TimeSpanDays': time_span #,
+                'TimeSpanDays': time_span,
+                'BalanceAboveMinimum': absolute_min_balance
                 # 'MinimumBalanceInSpan': span_min_balance
             })
     # Check if the absolute minimum is already in our results by balance value
@@ -115,7 +118,8 @@ def identify_low_points(df, asset_class ='Asset Class', min_days=2):
             'LowPointBalance': absolute_min_balance,
             'StartDate': min_date,
             'EndDate': max_date,
-            'TimeSpanDays': full_span #,
+            'TimeSpanDays': full_span,
+            'BalanceAboveMinimum': absolute_min_balance
             # 'MinimumBalanceInSpan': absolute_min_balance
         })
     # Convert results to DataFrame and sort by time span (ascending)
@@ -126,3 +130,97 @@ def identify_low_points(df, asset_class ='Asset Class', min_days=2):
     else:
         return pd.DataFrame(columns=['LowPointDate', 'LowPointBalance',
                                     'StartDate', 'EndDate', 'TimeSpanDays'])
+
+
+def identify_progressive_timespans(df, asset_class='Asset Class', min_days=2):
+    """
+    This function creates progressive timespans starting from the minimum date,
+    with each timespan increasing in length by one day, until reaching the point 
+    with the lowest balance in the dataset.
+    
+    Unlike identify_low_points which works backwards from low points to max date,
+    this function works forward from min date with incrementally longer periods.
+    
+    Parameters:
+    -----------
+    df : pandas.DataFrame
+        DataFrame containing at least 'Date' and 'Balance' columns
+    asset_class : str, default='Asset Class'
+        Asset class column name (for future use/compatibility)
+    min_days : int, default=2
+        Minimum number of days for a valid time span
+        
+    Returns:
+    --------
+    pandas.DataFrame
+        DataFrame containing progressive timespans with columns:
+        - StartDate: Always the minimum date in dataset
+        - EndDate: Progressive end dates (min_date + n days)
+        - TimeSpanDays: Length of timespan in days
+        - MinBalanceInSpan: Lowest balance found in this timespan
+        - EndBalance: Balance at the end date of this timespan
+        - BalanceAboveMinimum: End balance minus the absolute minimum balance in entire dataset
+        ALTER TABLE `investmentwindow` ADD COLUMN `BalanceAboveMinimum` decimal(12,2) NOT NULL DEFAULT '0.00';
+    """
+    # Ensure Date column is datetime type
+    if not pd.api.types.is_datetime64_any_dtype(df['Date']):
+        df['Date'] = pd.to_datetime(df['Date'])
+    
+    # Sort df chronologically
+    df = df.sort_values('Date').reset_index(drop=True)
+    
+    # Get the minimum and maximum dates
+    min_date = df['Date'].min()
+    max_date = df['Date'].max()
+    
+    # Find the absolute minimum balance in the entire dataset
+    absolute_min_balance = df['Balance'].min()
+    
+    # Find the date where the absolute minimum balance occurs (first occurrence)
+    absolute_min_date = df[df['Balance'] == absolute_min_balance]['Date'].iloc[0]
+    
+    # Create a list of all unique dates for easier processing
+    unique_dates = sorted(df['Date'].unique())
+    min_date_idx = unique_dates.index(min_date)
+    absolute_min_date_idx = unique_dates.index(absolute_min_date)
+    
+    results = []
+    
+    # Generate progressive timespans from min_date until we reach absolute_min_date
+    for end_idx in range(min_date_idx, absolute_min_date_idx + 1):
+        start_date = min_date
+        end_date = unique_dates[end_idx]
+        
+        # Calculate time span
+        time_span = (end_date - start_date).days + 1
+        
+        # Check if time span meets minimum requirement
+        if time_span >= min_days:
+            # Get data for this timespan
+            span_data = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
+            
+            # Find minimum balance in this span
+            min_balance_in_span = span_data['Balance'].min()
+            
+            # Get balance at end date
+            end_balance = span_data[span_data['Date'] == end_date]['Balance'].iloc[0]
+            
+            # Calculate balance above minimum (end balance minus absolute minimum)
+            balance_above_minimum = end_balance - absolute_min_balance
+            
+            results.append({
+                'StartDate': start_date,
+                'EndDate': end_date,
+                'TimeSpanDays': time_span,
+                'MinBalanceInSpan': min_balance_in_span,
+                'EndBalance': end_balance,
+                'BalanceAboveMinimum': balance_above_minimum
+            })
+    
+    # Convert results to DataFrame
+    if results:
+        result_df = pd.DataFrame(results)
+        return result_df
+    else:
+        return pd.DataFrame(columns=['StartDate', 'EndDate', 'TimeSpanDays', 
+                                   'MinBalanceInSpan', 'EndBalance', 'BalanceAboveMinimum'])

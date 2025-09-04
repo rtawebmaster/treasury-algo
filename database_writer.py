@@ -32,8 +32,8 @@ def write_results_to_database(windows_df, asset_classes_df):
     # Prepare insert statement
     insert_query = """
     INSERT INTO InvestmentWindow
-    (ClassName, LastEdited, Created, FromDate, EndDate, Available, Days, AssetClassID)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    (ClassName, LastEdited, Created, FromDate, EndDate, Available, Days, AssetClassID, BalanceAboveMinimum)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     # Counter for successful and failed inserts
     successful = 0
@@ -52,14 +52,15 @@ def write_results_to_database(windows_df, asset_classes_df):
 
             # Prepare data for insert
             data = (
-                'App\\Model\\InvestmentWindow',  # ClassName
-                current_datetime,                # LastEdited
-                current_datetime,                # Created
-                row['StartDate'].strftime('%Y-%m-%d'),  # FromDate
-                row['EndDate'].strftime('%Y-%m-%d'),    # EndDate
-                float(row['LowPointBalance']),   # Available
-                int(row['TimeSpanDays']),        # Days
-                int(asset_class_id)              # AssetClassID
+                'App\\Model\\InvestmentWindow',            # ClassName
+                current_datetime,                          # LastEdited
+                current_datetime,                          # Created
+                row['StartDate'].strftime('%Y-%m-%d'),     # FromDate
+                row['EndDate'].strftime('%Y-%m-%d'),       # EndDate
+                float(row['LowPointBalance']),             # Available
+                int(row['TimeSpanDays']),  # Days
+                int(asset_class_id),       # AssetClassID
+                float(row['BalanceAboveMinimum'])          # BalanceAboveMinimum
             )
             # Execute insert
             cursor.execute(insert_query, data)
