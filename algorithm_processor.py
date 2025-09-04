@@ -19,8 +19,13 @@ def process_investment_algorithm(running_balances):
         ][['TransactionDate', 'Available']].rename(
             columns={'TransactionDate': 'Date', 'Available': 'Balance'}
         )
+        # Workaround: Remove rows with BalanceAboveMinimum <= 0
         result = identify_low_points(df)
+        if 'BalanceAboveMinimum' in result.columns:
+            result = result[result['BalanceAboveMinimum'] > 0]
+
         progressive_result = identify_progressive_timespans(df)
+
         result = pd.concat([result, progressive_result], ignore_index=True) #.fillna(0)
         result['Asset Class'] = asset_class
         windows = pd.concat([windows,result], ignore_index=True)

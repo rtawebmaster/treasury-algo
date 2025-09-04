@@ -14,3 +14,4 @@ venv/
 *.bak
 __pycache__/
 *.pyc
+debug_*
