@@ -50,3 +50,22 @@ echo "" > .\.venv\.nosync
 .\.venv\Scripts\python.exe -m pip install ipykernel
 .\.venv\Scripts\activate
 ```
+
+
+
+## Troubleshooting/Debug
+
+Return investmentwindows sorted as in the CMS
+```sql
+SELECT w.ID, w.ClassName, w.LastEdited, w.Created, FromDate, EndDate, Available, Days, AssetClassID, BalanceAboveMinimum, a.Title 
+FROM treas.investmentwindow w
+LEFT JOIN assetclass a on a.ID = w.AssetClassID 
+-- WHERE Available > 0
+WHERE AssetClassID = 7
+ORDER BY FromDate, Days
+```
+
+## TODOs
+* Set the default OpportuneIQ sortorder
+       FromDate, Days
+* Add the progressive column: BalanceAboveMinimum to the CMS
