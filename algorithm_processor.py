@@ -10,10 +10,12 @@ def process_investment_algorithm(running_balances):
     windows = pd.DataFrame()
     assets = ['Certificate of Deposit', 'Mutual Fund', 'Commercial Paper', 'Money Market', 'US Treasuries', 'US Agencies']
     for asset_class in assets:
+        today = pd.Timestamp.today().normalize()
+        timespan = today + pd.DateOffset(months=4)
         df = running_balances[
             (running_balances['TransactionClass'] == asset_class) &
-            (running_balances['TransactionDate'] <= '2025-06-30') &
-            (running_balances['TransactionDate'] > '2025-01-21')
+            (running_balances['TransactionDate'] >= today) &
+            (running_balances['TransactionDate'] <= timespan)
         ][['TransactionDate', 'Available']].rename(
             columns={'TransactionDate': 'Date', 'Available': 'Balance'}
         )
