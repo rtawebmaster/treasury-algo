@@ -16,9 +16,12 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
 3. algo2.ipynb (not working correctly as of 8/3/2025)
        algo2 <- running_balances.pkl -> invest_windows.pkl
               process finding low points from the end with visual (needs the forward look by day)
-                     NOTE: This is the dev repository with the algo code put into *_processor files that have then been added to the Azure function project that is used for deployment.
+                     NOTE: This is the dev repository with the algo code put into *_processor files that have then been later added to the Azure function project that is used for deployment.
 
-4. Write the results back into the database
+4. algo3.ipynb (forward look development on 9/19/2019)
+              Refactored running balances processing
+
+5. Write the results back into the database
        insert (local) <- invest_windows.pkl
 
 NOTE: The algo code has been modularized in the *_processor and *_writer files. The main script is the OpportuneIQ.py (press F5 to execute locally). All these have been transferred into the function project (the setup here is due to challenges in running the function project locally - once these are resolved, it can be removed).
