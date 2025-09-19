@@ -14,9 +14,13 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
               rebuild of the daily asset balances table -the df is saved into a .pkl file(s): running_balances.pkl
 
 3. algo2.ipynb (not working correctly as of 8/3/2025)
-       algo2 <- running_balances.pkl -> invest_windows.pkl
+       algo2 <- running_balances.pkl
+             -> invest_windows.pkl
               process finding low points from the end with visual (needs the forward look by day)
-                     NOTE: This is the dev repository with the algo code put into *_processor files that have then been later added to the Azure function project that is used for deployment.
+                     NOTES: - This is the dev repository with the algo code put into *_processor files that have then been later added to the Azure        function project that is used for deployment.
+                            - As of 7/31 the prod function pulls the asset class balances directly from the database
+                                   table_name = 'RunningBalanceDayView'
+                                   running_balances = fetch_data(table_name)
 
 4. algo3.ipynb (forward look development on 9/19/2019)
               Refactored running balances processing
