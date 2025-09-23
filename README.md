@@ -21,6 +21,8 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
                             - As of 7/31 the prod function pulls the asset class balances directly from the database
                                    table_name = 'RunningBalanceDayView'
                                    running_balances = fetch_data(table_name)
+                            - The Algo3 as of 9/19 pulls the data from the running_balances.pkl which doesn't container valid data!
+                                   Refer to the data-debug.ipynb
 
 4. algo3.ipynb (forward look development on 9/19/2019)
               Refactored running balances processing
