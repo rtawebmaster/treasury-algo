@@ -25,7 +25,13 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
                                    Refer to the data-debug.ipynb
 
 4. algo3.ipynb (forward look development on 9/19/2019)
-              Refactored running balances processing
+              - Refactored running balances processing
+              - This version returns zero-balance windows and the progressive intervals are missing:
+                     Investment Windows,for example, for US Agencies:
+                            Start_Date   End_Date   Available  Days_in_Interval
+                            2025-09-04 2025-09-04 18780124.55                 1
+                            2025-09-04 2025-09-05 17860124.55                 2
+                            2025-09-04 2025-10-10        0.00                37
 
 5. Write the results back into the database
        insert (local) <- invest_windows.pkl
