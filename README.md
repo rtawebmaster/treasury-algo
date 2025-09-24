@@ -33,7 +33,12 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
                             2025-09-04 2025-09-05 17860124.55                 2
                             2025-09-04 2025-10-10        0.00                37
 
-5. Write the results back into the database
+5. algo4.ipynb (exact amount intervals - day by day forward look)
+              - This version also includes a plot of the available $-amount
+
+6. algo5.ipynb (addition of minimum amount intervals - longest look)
+
+7. Write the results back into the database
        insert (local) <- invest_windows.pkl
 
 NOTE: The algo code has been modularized in the *_processor and *_writer files. The main script is the OpportuneIQ.py (press F5 to execute locally). All these have been transferred into the function project (the setup here is due to challenges in running the function project locally - once these are resolved, it can be removed).
