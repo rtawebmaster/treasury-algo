@@ -37,6 +37,7 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
               - This version also includes a plot of the available $-amount
 
 6. algo5.ipynb (addition of minimum amount intervals - longest look)
+              - Refacrtoring into more manageble functions
 
 7. Write the results back into the database
        insert (local) <- invest_windows.pkl
