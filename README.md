@@ -35,9 +35,15 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
 
 5. algo4.ipynb (exact amount intervals - day by day forward look)
               - This version also includes a plot of the available $-amount
+              - This is the latest, best version as of 9/25/25.
+              - Uses two approaches:
+                     1. exact day-to-day balance
+                     2. minimum balance for longer investment windows
+              -      TODO: Revise the exact day-to-day as is is missing the look forward
 
 6. algo5.ipynb (addition of minimum amount intervals - longest look)
               - Refacrtoring into more manageble functions
+              - Combines both algorythms (very complex - don't use it!)
 
 7. Write the results back into the database
        insert (local) <- invest_windows.pkl
