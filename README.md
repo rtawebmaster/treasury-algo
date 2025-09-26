@@ -43,15 +43,18 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
 
 6. algo5.ipynb (addition of minimum amount intervals - longest look)
               - Refacrtoring into more manageble functions
-              - Combines both algorythms (very complex - don't use it!)
+              - Combines both algorythms (very complex - don't use it - abandoned fork!)
 
-7. Write the results back into the database
+7. algo6.ipynb switch to the manually developed algo logic (in Excel) - This version was forked off algo4 on 9/26.
+
+
+8. Write the results back into the database
        insert (local) <- invest_windows.pkl
        NOTE: The algo code has been modularized in the *_processor and *_writer files. The main script is the OpportuneIQ.py (press F5 to execute locally). All these have been transferred into the function project (the setup here is due to challenges in running the function project locally - once these are resolved, it can be removed).
        Refer to:
        - opportuneIQ.py - main
               - write_results_to_database(investment_windows, asset_classes)
-                     - investmetn_windows columns=['LowPointDate', 'LowPointBalance', 'StartDate', 'EndDate', 'TimeSpanDays', 
+                     - investmetn_windows columns=['LowPointDate', 'LowPointBalance', 'StartDate', 'EndDate', 'TimeSpanDays',
                                    'MinBalanceInSpan', 'EndBalance', 'BalanceAboveMinimum']
               Database columns:
               `FromDate` date DEFAULT NULL,
@@ -96,9 +99,9 @@ echo "" > .\.venv\.nosync
 
 Return investmentwindows sorted as in the CMS
 ```sql
-SELECT w.ID, w.ClassName, w.LastEdited, w.Created, FromDate, EndDate, Available, Days, AssetClassID, BalanceAboveMinimum, a.Title 
+SELECT w.ID, w.ClassName, w.LastEdited, w.Created, FromDate, EndDate, Available, Days, AssetClassID, BalanceAboveMinimum, a.Title
 FROM treas.investmentwindow w
-LEFT JOIN assetclass a on a.ID = w.AssetClassID 
+LEFT JOIN assetclass a on a.ID = w.AssetClassID
 -- WHERE Available > 0
 WHERE AssetClassID = 7
 ORDER BY FromDate, Days
