@@ -47,8 +47,20 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
 
 7. Write the results back into the database
        insert (local) <- invest_windows.pkl
-
-NOTE: The algo code has been modularized in the *_processor and *_writer files. The main script is the OpportuneIQ.py (press F5 to execute locally). All these have been transferred into the function project (the setup here is due to challenges in running the function project locally - once these are resolved, it can be removed).
+       NOTE: The algo code has been modularized in the *_processor and *_writer files. The main script is the OpportuneIQ.py (press F5 to execute locally). All these have been transferred into the function project (the setup here is due to challenges in running the function project locally - once these are resolved, it can be removed).
+       Refer to:
+       - opportuneIQ.py - main
+              - write_results_to_database(investment_windows, asset_classes)
+                     - investmetn_windows columns=['LowPointDate', 'LowPointBalance', 'StartDate', 'EndDate', 'TimeSpanDays', 
+                                   'MinBalanceInSpan', 'EndBalance', 'BalanceAboveMinimum']
+              Database columns:
+              `FromDate` date DEFAULT NULL,
+              `EndDate` date DEFAULT NULL,
+              `Available` decimal(12,2) NOT NULL DEFAULT '0.00',
+              `Days` int NOT NULL DEFAULT '0',
+              `AssetClassID` int NOT NULL DEFAULT '0',
+              `BalanceAboveMinimum` decimal(12,2) NOT NULL DEFAULT '0.00',
+       - Loop over the asset classes is in the algorithn_processor which returns two merged window dataframes
 
 
 ## Path(s)
