@@ -46,6 +46,9 @@ onenote:https://rtachicago.sharepoint.com/sites/TreasuryForecastAppDev-FIT/SiteA
               - Combines both algorythms (very complex - don't use it - abandoned fork!)
 
 7. algo6.ipynb switch to the manually developed algo logic (in Excel) - This version was forked off algo4 on 9/26.
+              - This version is not working correctly
+
+8. algo7.ipynb switch to the vertical processing on 9/29
 
 
 8. Write the results back into the database
