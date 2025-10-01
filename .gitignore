@@ -11,6 +11,7 @@ venv/
 .env.test
 *.pkl
 *.sql
+*.csv
 *.bak
 __pycache__/
 *.pyc
