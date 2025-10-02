@@ -87,9 +87,13 @@ def find_window_intervals(df, threshold=1_000_000):
     df_intervals['end_date'] = pd.to_datetime(df_intervals['end_date']).dt.date
     df_intervals['amount'] = df_intervals['amount'].round(2)
     # Keep Only the Max Amount Interval for Each Overlapping Period
-    result = df_intervals.loc[df_intervals.groupby(['start_date', 'end_date'])['amount'].idxmax()]
+    result = df_intervals.loc[df_intervals.groupby(['start_date'])['amount'].idxmax()]
+    # Remove intervals that are completely contained within other intervals (with the same amount).
+    # Keep only the interval with the maximum TimeSpanDays for each group of overlapping intervals with the same amount.
+    result = df_intervals.loc[df_intervals.groupby(['end_date'])['duration'].idxmax()]
+    # TODO: Instead of filtering this way, it will be more efficient using conditional logic that prevents the creation of new intervals
+    #            while there is already an open one (while looping of the dates).
     return result
-
 
 # Step 3: Update Changed Amounts Based on Prior Date from the Original Data
 def calc_interval_metrics(df_intervals, df_data):
