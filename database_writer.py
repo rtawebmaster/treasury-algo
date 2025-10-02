@@ -58,9 +58,9 @@ def write_results_to_database(windows_df, asset_classes_df):
                 row['StartDate'].strftime('%Y-%m-%d'),     # FromDate
                 row['EndDate'].strftime('%Y-%m-%d'),       # EndDate
                 float(row['LowPointBalance']),             # Available
-                int(row['TimeSpanDays']),  # Days
-                int(asset_class_id),       # AssetClassID
-                float(row['BalanceAboveMinimum'])          # BalanceAboveMinimum
+                int(row['TimeSpanDays']),                  # Days
+                int(asset_class_id),                       # AssetClassID
+                float(row['Change'])                       # BalanceAboveMinimum
             )
             # Execute insert
             cursor.execute(insert_query, data)

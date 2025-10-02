@@ -6,7 +6,7 @@ from datetime import datetime
 # Import modularized code
 from data_processor import load_and_process_data
 from data_processor import load_asset_classes
-from algorithm_processor import process_investment_algorithm
+from algorithm2_processor import process_investment_algorithm
 from database_writer import write_results_to_database
 from database_writer import truncate_investment_window_table
 
