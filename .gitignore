@@ -6,6 +6,7 @@ venv/
 .env_*
 .env.local
 .env.prod
+.env.prod_ro
 .env.stage
 .env.dev
 .env.test
