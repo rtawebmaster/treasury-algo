@@ -32,7 +32,7 @@ def write_results_to_database(windows_df, asset_classes_df):
     # Prepare insert statement
     insert_query = """
     INSERT INTO InvestmentWindow
-    (ClassName, LastEdited, Created, FromDate, EndDate, Available, Days, AssetClassID, BalanceAboveMinimum)
+    (ClassName, LastEdited, Created, FromDate, EndDate, Available, Days, AssetClassID, `Change`)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     # Counter for successful and failed inserts
