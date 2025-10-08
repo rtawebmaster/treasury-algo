@@ -1,4 +1,5 @@
 import pandas as pd
+import logging
 
 # Prepare the DataFrame for the investment window analysis by ensuring proper data types and sorting.
 def prepare_data(df, asset_class=None, start=pd.Timestamp.now(), end=pd.Timestamp.now()+pd.DateOffset(months=3)):
@@ -144,17 +145,28 @@ def calc_interval_metrics(df_intervals, df_data):
 
 
 # Main function to process the investment algorithm for different asset classes
-#     This function is called from the main (Azure functions) script and then it calls all the other functions in order
-def process_investment_algorithm(running_balances):
+#     This function is called from the main script (Azure functions - opportuneIQ) and then
+#         it calls all the other functions for the processing  in order
+def process_investment_algorithm(running_balances, data_start = None):
     """
     Process the investment algorithm using running balances
     """
+    
+
+    if data_start:
+        timespan_start = pd.to_datetime(data_start).normalize()
+    else:
+        timespan_start = pd.Timestamp.today().normalize()
+
+    timespan_end_date = timespan_start + pd.DateOffset(months=4)
+    logging.info(f"Processing timespan: {timespan_start.date()}-{timespan_end_date.date()}")
+
     windows = pd.DataFrame()
     assets = ['Certificate of Deposit', 'Mutual Fund', 'Commercial Paper', 'Money Market', 'US Treasuries', 'US Agencies']
     for asset_class in assets:
-        print("Processing:", asset_class)
+        print("Asset class:", asset_class)
         data = None
-        data = prepare_data(running_balances, asset_class, '2025-09-04', '2025-12-31')
+        data = prepare_data(running_balances, asset_class, timespan_start, timespan_end_date)
         all_intervals = find_window_intervals(data).sort_values(['start_date'], ascending=[True])
         final_intervals = calc_interval_metrics(all_intervals, data)
         windows = pd.concat([windows, final_intervals], ignore_index=True)

@@ -6,6 +6,7 @@ from datetime import datetime
 # Import modularized code
 from data_processor import load_and_process_data
 from data_processor import load_asset_classes
+from data_processor import load_data_start
 from algorithm2_processor import process_investment_algorithm
 from database_writer import write_results_to_database
 from database_writer import truncate_investment_window_table
@@ -25,7 +26,8 @@ def ProcessTreasuryForecastingData():
 
     # # Part 2: Algorithm processing
     logging.info("Starting algorithm processing")
-    investment_windows = process_investment_algorithm(running_balances)
+    data_start = load_data_start()
+    investment_windows = process_investment_algorithm(running_balances, data_start)
     logging.info(f"Algorithm processing complete. Found {len(investment_windows)} investment windows")
 
     # # Part 3: Database writing

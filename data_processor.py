@@ -5,6 +5,19 @@ import pandas as pd
 import numpy as np
 from shared.config import get_db_connection
 
+def load_data_start():
+    """
+    Load asset classes from the database
+    Returns:
+        pandas.DataFrame: DataFrame containing asset classes
+    """
+    table_name = 'SiteConfig'
+    column_names = 'GFBeginDate'
+    data_start_date = fetch_data(table_name, column_names)
+    data_start_date_str = str(data_start_date.iloc[0, 0])
+    logging.info(f'Executing data_processor/load_data_start(): {data_start_date_str}')
+    return data_start_date_str
+
 def load_asset_classes():
     logging.info('Executing data_processor/load_asset_classes().')
     """
